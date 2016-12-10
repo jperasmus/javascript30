@@ -1,0 +1,15 @@
+{
+  "name": "JavaScript30",
+  "version": "1.0.0",
+  "description": "My implementation of Wes Bos's #JavaScript30 course",
+  "main": "server.js",
+  "repository": "git@github.com:wesbos/JavaScript30.git",
+  "author": "JP Erasmus <jperasmus11@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.14.0"
+  },
+  "scripts": {
+    "start": "node server"
+  }
+}
