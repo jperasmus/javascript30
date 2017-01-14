@@ -3,8 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <title>Array Cardio 💪</title>
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Roboto|Source+Code+Pro" rel="stylesheet">
+  <style>
+    * > {
+      box-sizing: border-box;
+    }
+
+    html {
+      /*background: #ccc url(http://unsplash.it/g/1200/860?image=1073) no-repeat center center fixed;*/
+      background: #c93825 url(http://unsplash.it/1200/860?image=859) no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Source Code Pro', monospace;
+    }
+
+    body {
+      font-size: 1rem;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-family: 'Gloria Hallelujah', cursive;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      min-height: 100vh;
+    }
+
+    .container__results {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .item {
+      background: rgba(255, 255, 255, .35);
+      border-radius: 10px;
+    }
+
+    .item__title {
+      color: #fff;
+      cursor: pointer;
+      padding: 15px;
+    }
+
+    .item__answer {
+      overflow: hidden;
+      margin: 0;
+      max-height: 0;
+      transition: max-height .4s;
+      transition-timing-function: ease-out;
+    }
+
+    .item__answer > pre {
+      background: #fff;
+      margin: 0;
+      padding: 15px;
+      height: 100%;
+    }
+
+    .item__answer--expand {
+      max-height: 3000px;
+    }
+
+    pre {
+      font-size: .75rem;
+      font-family: 'Source Code Pro', monospace;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div id="results" class="container__results"></div>
+  </div>
+
   <script>
     // Get your shorts on - this is an array workout!
     // ## Array Cardio Day 1
@@ -21,35 +98,110 @@
       { first: 'Max', last: 'Planck', year: 1858, passed: 1947 }
     ];
 
-    const flavours = ['Chocolate Chip', 'Kulfi', 'Caramel Praline', 'Chocolate', 'Burnt Caramel', 'Pistachio', 'Rose', 'Sweet Coconut', 'Lemon Cookie', 'Toffeeness', 'Toasted Almond', 'Black Raspberry Crunch', 'Chocolate Brownies', 'Pistachio Almond', 'Strawberry', 'Lavender Honey', 'Lychee', 'Peach', 'Black Walnut', 'Birthday Cake', 'Mexican Chocolate', 'Mocha Almond Fudge', 'Raspberry'];
-
     const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
+
+    const results = [];
+
+    const activeItemClass = 'item__answer--expand';
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const filteredInventors = inventors.filter(inventor => inventor.year >= 1500 && inventor.year < 1600);
+    results.push({
+      number: 1,
+      title: 'Filtered Inventors (born in 1500\'s)',
+      answer: filteredInventors
+    });
 
     // Array.prototype.map()
-    // 2. Give us an array of the inventory first and last names
+    // 2. Give us an array of the inventors first and last names
+    const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`);
+    results.push({
+      number: 2,
+      title: 'Inventor\'s Fullnames',
+      answer: fullNames
+    });
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const sortedOldestToYoungest = inventors.sort((inventorA, inventorB) => inventorA.year > inventorB.year ? 1 : -1);
+    results.push({
+      number: 3,
+      title: 'Sorted Inventors (oldest to youngest)',
+      answer: sortedOldestToYoungest
+    });
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    const totalYears = inventors.reduce((total, inventor) => total + inventor.passed - inventor.year, 0);
+    results.push({
+      number: 4,
+      title: 'Total years lived for all inventors',
+      answer: totalYears
+    });
 
     // 5. Sort the inventors by years lived
+    const sortedByYearsLived = inventors.sort((inventorA, inventorB) => inventorA.passed - inventorA.year > inventorB.passed - inventorB.year ? -1 : 1);
+    results.push({
+      number: 5,
+      title: 'Sorted Inventors (years lived)',
+      answer: sortedByYearsLived
+    });
 
-    // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
-    // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-
-
-    // 7. sort Exercise
+    // 6. sort Exercise
     // Sort the people alphabetically by last name
+    const sortedByLastName = people.sort((personA, personB) => {
+      const [ lastA ] = personA.split(',');
+      const [ lastB ] = personB.split(',');
+      return lastA < lastB ? -1 : 1
+    });
+    results.push({
+      number: 6,
+      title: 'Sorted People (by lastname)',
+      answer: sortedByLastName
+    });
 
-    // 8. Reduce Exercise
+    // 7. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    const summedInstanced = data.reduce((result, item) => {
+      const count = result[item] || 0;
+      result[item] = count + 1;
+      return result;
+    }, {});
+    results.push({
+      number: 7,
+      title: 'Summed instances',
+      answer: summedInstanced
+    });
 
+    function displayResults(resultsData) {
+      const resultsElement = document.getElementById('results');
+      resultsElement.innerHTML = resultsData.reduce((markup, current) => `
+        ${markup}
+        <dl class="item">
+          <dt class="item__title" data-title="${current.number}">
+            <span class="item__number">${current.number}</span>
+            ${current.title}
+          </dt>
+          <dd class="item__answer" data-answer="${current.number}">
+            <pre>${JSON.stringify(current.answer, null, 2)}</pre>
+          </dd>
+        </dl>
+      `, '<h1>Array Cardio: Day 1 💪🏻</h1>');
+    }
+
+    displayResults(results);
+
+    function toggleItem() {
+      const title = this.dataset.title;
+      const answer = document.querySelector(`[data-answer="${title}"]`);
+      answer.classList.toggle(activeItemClass);
+      console.log(answer.classList.contains(activeItemClass));
+    }
+
+    const titles = document.querySelectorAll('.item__title');
+    titles.forEach(title => title.addEventListener('click', toggleItem));
   </script>
 </body>
 </html>
